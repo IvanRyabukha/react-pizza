@@ -1,21 +1,18 @@
 import React, { useState } from "react";
+import type { Pizza } from "../types/Pizza";
 
-// interface Pizza {
-//   id: number;
-//   imageUrl: string;
-//   title: string;
-//   types: number[];
-//   sizes: number[];
-//   price: number;
-//   category: number;
-//   rating: number;
-// }
+type PizzaBlockProps = Pick<
+  Pizza,
+  "title" | "price" | "imageUrl" | "sizes" | "types"
+>;
 
-// type Props = {
-//   item: Pizza;
-// };
-
-export const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  title,
+  price,
+  imageUrl,
+  sizes,
+  types,
+}) => {
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
 
