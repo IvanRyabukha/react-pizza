@@ -2,8 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import logoSvg from "../assets/img/pizza-logo.svg";
+import { Search } from "./Search/Search";
 
-export const Header: React.FC = () => {
+type Props = {
+  inputQuery: string;
+  onChangeInputQuery: (query: string) => void;
+};
+
+export const Header: React.FC<Props> = ({ inputQuery, onChangeInputQuery }) => {
   return (
     <header className="header">
       <div className="container">
@@ -16,6 +22,7 @@ export const Header: React.FC = () => {
             </div>
           </div>
         </Link>
+        <Search inputQuery={inputQuery} onChangeInputQuery={onChangeInputQuery}/>
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>520 ₽</span>
