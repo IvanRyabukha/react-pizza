@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
-export const Categories: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+type Props = {
+  categoryId: number;
+  onChangeCategory: (id: number) => void;
+}
 
+export const Categories: React.FC<Props> = ({ categoryId, onChangeCategory }) => {
   const categories = [
     "Все",
     "Мясные",
@@ -12,18 +15,14 @@ export const Categories: React.FC = () => {
     "Закрытые",
   ];
 
-  const changeActiveIndex = (index: number) => {
-    setActiveIndex(index);
-  };
-
   return (
     <div className="categories">
       <ul>
         {categories.map((item, index) => (
           <li
             key={index}
-            onClick={() => changeActiveIndex(index)}
-            className={activeIndex === index ? "active" : ""}
+            onClick={() => onChangeCategory(index)}
+            className={categoryId === index ? "active" : ""}
           >
             {item}
           </li>
