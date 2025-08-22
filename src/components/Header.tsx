@@ -4,12 +4,8 @@ import { Link } from "react-router-dom";
 import logoSvg from "../assets/img/pizza-logo.svg";
 import { Search } from "./Search/Search";
 
-type Props = {
-  inputQuery: string;
-  onChangeInputQuery: (query: string) => void;
-};
 
-export const Header: React.FC<Props> = ({ inputQuery, onChangeInputQuery }) => {
+export const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="container">
@@ -22,7 +18,7 @@ export const Header: React.FC<Props> = ({ inputQuery, onChangeInputQuery }) => {
             </div>
           </div>
         </Link>
-        <Search inputQuery={inputQuery} onChangeInputQuery={onChangeInputQuery}/>
+        <Search />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>520 ₽</span>

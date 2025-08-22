@@ -8,23 +8,32 @@ import { Cart } from "./pages/Cart";
 
 import "./scss/app.scss";
 
+type SearchContextType = {
+  inputQuery: string;
+  setInputQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export const SearchContext = React.createContext<SearchContextType>({
+  inputQuery: '',
+  setInputQuery: () => {},
+});
+
 const App: React.FC = () => {
-  const [inputQuery, setInputQuery] = useState('');
+  const [inputQuery, setInputQuery] = useState("");
 
   return (
     <div className="wrapper">
-      <Header
-        inputQuery={inputQuery}
-        onChangeInputQuery={setInputQuery}
-      />
-      <div className="content">
+      <SearchContext.Provider value={{ inputQuery, setInputQuery }}>
+        <Header />
+        <div className="content">
           <Routes>
-            <Route path="/" element={<Home inputQuery={inputQuery} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/cart" element={<Cart />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
-      </div>
+        </div>
+      </SearchContext.Provider>
     </div>
   );
 };

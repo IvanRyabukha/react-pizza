@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { PizzaBlock } from "../components/PizzaBlock";
@@ -6,12 +6,11 @@ import Skeleton from "../components/Skeleton";
 import type { Pizza } from "../types/Pizza";
 import type { SortType } from "../types/SortType";
 import { Pagination } from "../components/Pagination/Pagination";
+import { SearchContext } from "../App";
 
-type Props = {
-  inputQuery: string;
-};
 
-export const Home: React.FC<Props> = ({ inputQuery }) => {
+export const Home: React.FC = () => {
+  const {inputQuery} = useContext(SearchContext);
   const [items, setItems] = useState<Pizza[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
