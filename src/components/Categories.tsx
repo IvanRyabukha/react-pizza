@@ -1,11 +1,11 @@
 import React from "react";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import * as filterAction from "../redux/slice/filterSlice";
 
-type Props = {
-  categoryId: number;
-  onChangeCategory: (id: number) => void;
-}
+export const Categories: React.FC = () => {
+  const categoryId = useAppSelector((state) => state.filter.categoryId);
+  const dispatch = useAppDispatch();
 
-export const Categories: React.FC<Props> = ({ categoryId, onChangeCategory }) => {
   const categories = [
     "Все",
     "Мясные",
@@ -21,7 +21,7 @@ export const Categories: React.FC<Props> = ({ categoryId, onChangeCategory }) =>
         {categories.map((item, index) => (
           <li
             key={index}
-            onClick={() => onChangeCategory(index)}
+            onClick={() => dispatch(filterAction.setCategoryId(index))}
             className={categoryId === index ? "active" : ""}
           >
             {item}

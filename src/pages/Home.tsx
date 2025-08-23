@@ -4,21 +4,19 @@ import { Sort } from "../components/Sort";
 import { PizzaBlock } from "../components/PizzaBlock";
 import Skeleton from "../components/Skeleton";
 import type { Pizza } from "../types/Pizza";
-import type { SortType } from "../types/SortType";
 import { Pagination } from "../components/Pagination/Pagination";
 import { SearchContext } from "../App";
-
+import { useAppSelector } from "../redux/hooks";
 
 export const Home: React.FC = () => {
-  const {inputQuery} = useContext(SearchContext);
+  const { inputQuery } = useContext(SearchContext);
   const [items, setItems] = useState<Pizza[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
+
+  const categoryId = useAppSelector((state) => state.filter.categoryId);
+  const sortType = useAppSelector((state) => state.filter.sort);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortType, setSortType] = useState<SortType>({
-    name: "популярности",
-    sortProperty: "rating",
-  });
 
   useEffect(() => {
     setIsLoading(true);
@@ -49,14 +47,8 @@ export const Home: React.FC = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          categoryId={categoryId}
-          onChangeCategory={(id: number) => setCategoryId(id)}
-        />
-        <Sort
-          sortType={sortType}
-          onChangeSortType={(sortParams: SortType) => setSortType(sortParams)}
-        />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>

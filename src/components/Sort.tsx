@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import arrowTop from "../assets/img/arrow-top.svg";
 import arrowDown from "../assets/img/arrow-down.svg";
 import type { SortType } from "../types/SortType";
+import * as filterAction from "../redux/slice/filterSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
-type Props = {
-  sortType: SortType;
-  onChangeSortType: (sortParams: SortType) => void;
-};
+export const Sort: React.FC = () => {
+  const sortType = useAppSelector((state) => state.filter.sort);
+  const dispatch = useAppDispatch();
 
-export const Sort: React.FC<Props> = ({ sortType, onChangeSortType }) => {
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
+
   const list: SortType[] = [
     { name: "популярности (DESC)", sortProperty: "rating" },
     { name: "популярности (ASC)", sortProperty: "-rating" },
@@ -35,9 +36,11 @@ export const Sort: React.FC<Props> = ({ sortType, onChangeSortType }) => {
             {list.map((item, index) => (
               <li
                 key={index}
-                className={sortType.sortProperty === item.sortProperty ? "active" : ""}
+                className={
+                  sortType.sortProperty === item.sortProperty ? "active" : ""
+                }
                 onClick={() => {
-                  onChangeSortType(item);
+                  dispatch(filterAction.setSort(item));
                   setIsVisiblePopup(false);
                 }}
               >
