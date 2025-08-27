@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { PizzaBlock } from "../components/PizzaBlock";
@@ -15,8 +17,7 @@ export const Home: React.FC = () => {
 
   const categoryId = useAppSelector((state) => state.filter.categoryId);
   const sortType = useAppSelector((state) => state.filter.sort);
-
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = useAppSelector((state) => state.filter.currentPage);
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,14 +27,13 @@ export const Home: React.FC = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = inputQuery ? `&search=${inputQuery}` : "";
 
-    fetch(
-      `https://68a7506d639c6a54e9a1aeba.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    )
+    axios
+      .get(
+        `https://68a7506d639c6a54e9a1aeba.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+      )
       .then((res) => {
-        return res.json();
-      })
-      .then(setItems)
-      .finally(() => {
+        setItems(res.data);
+      }).finally(() => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
-      <Pagination onChangePage={(page: number) => setCurrentPage(page)} />
+      <Pagination />
     </div>
   );
 };
