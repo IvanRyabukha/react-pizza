@@ -6,20 +6,20 @@ import type { SortType } from "../types/SortType";
 import * as filterAction from "../redux/slice/filterSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
+export const list: SortType[] = [
+  { name: "популярности (DESC)", sortProperty: "rating" },
+  { name: "популярности (ASC)", sortProperty: "-rating" },
+  { name: "цене (DESC)", sortProperty: "price" },
+  { name: "цене (ASC)", sortProperty: "-price" },
+  { name: "алфавиту (DESC)", sortProperty: "title" },
+  { name: "алфавиту (ASC)", sortProperty: "-title" },
+];
+
 export const Sort: React.FC = () => {
   const sortType = useAppSelector((state) => state.filter.sort);
   const dispatch = useAppDispatch();
 
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
-
-  const list: SortType[] = [
-    { name: "популярности (DESC)", sortProperty: "rating" },
-    { name: "популярности (ASC)", sortProperty: "-rating" },
-    { name: "цене (DESC)", sortProperty: "price" },
-    { name: "цене (ASC)", sortProperty: "-price" },
-    { name: "алфавиту (DESC)", sortProperty: "title" },
-    { name: "алфавиту (ASC)", sortProperty: "-title" },
-  ];
 
   return (
     <div className="sort">
