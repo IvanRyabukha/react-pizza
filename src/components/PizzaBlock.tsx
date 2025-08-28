@@ -1,22 +1,41 @@
 import React, { useState } from "react";
-import type { Pizza } from "../types/Pizza";
+import { useAppSelector, useAppDispatch } from "../redux/hooks";
+import * as cartAction from '../redux/slice/cartSlice';
+import type { Pizza, PizzaCartItem } from "../types/Pizza";
 
 type PizzaBlockProps = Pick<
   Pizza,
-  "title" | "price" | "imageUrl" | "sizes" | "types"
+  "id" | "title" | "price" | "imageUrl" | "sizes" | "types"
 >;
 
+const typeNames = ["Тонкое", "Традиционное"];
+
 export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  id,
   title,
   price,
   imageUrl,
   sizes,
   types,
 }) => {
+  const dispatch = useAppDispatch();
+  const count = useAppSelector((state) => state.cart.items.find(item => item.id === id)?.count || 0);
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
 
-  const typeNames = ["Тонкое", "Традиционное"];
+  const onClickAdd = () => {
+    const item: PizzaCartItem = {
+      id,
+      title,
+      price,
+      imageUrl,
+      type: typeNames[activeType],
+      size: activeSize,
+      count: 1,
+    };
+
+    dispatch(cartAction.addItem(item));
+  };
 
   return (
     <div className="pizza-block">
@@ -48,7 +67,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <button className="button button--outline button--add">
+        <button className="button button--outline button--add" onClick={onClickAdd}>
           <svg
             width="12"
             height="12"
@@ -62,7 +81,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
             />
           </svg>
           <span>Добавить</span>
-          {<i>{0}</i>}
+          {count > 0 && <i>{count}</i>}
         </button>
       </div>
     </div>

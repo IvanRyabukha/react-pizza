@@ -6,8 +6,9 @@ import {
 } from "@reduxjs/toolkit";
 
 import { filterSlice } from "./slice/filterSlice";
+import { cartSlice } from "./slice/cartSlice";
 
-const rootReducer = combineSlices(filterSlice);
+const rootReducer = combineSlices(filterSlice, cartSlice);
 
 export const store = configureStore({
   reducer: rootReducer,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import arrowTop from "../assets/img/arrow-top.svg";
 import arrowDown from "../assets/img/arrow-down.svg";
@@ -18,11 +18,26 @@ export const list: SortType[] = [
 export const Sort: React.FC = () => {
   const sortType = useAppSelector((state) => state.filter.sort);
   const dispatch = useAppDispatch();
+  const sortRef = useRef<HTMLDivElement>(null);
 
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if(sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsVisiblePopup(false);
+      }
+    };
+
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    }
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <img src={isVisiblePopup ? arrowDown : arrowTop} />
         <b>Сортировка по:</b>
