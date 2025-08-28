@@ -7,8 +7,9 @@ import {
 
 import { filterSlice } from "./slice/filterSlice";
 import { cartSlice } from "./slice/cartSlice";
+import { pizzaSlice } from "./slice/pizzaSlice";
 
-const rootReducer = combineSlices(filterSlice, cartSlice);
+const rootReducer = combineSlices(filterSlice, cartSlice, pizzaSlice);
 
 export const store = configureStore({
   reducer: rootReducer,

@@ -4,13 +4,11 @@ import type { PizzaCartItem } from "../../types/Pizza";
 type CartState = {
   items: PizzaCartItem[];
   totalPrice: number;
-  // totalItems: number;
 };
 
 const initialState: CartState = {
   items: [],
   totalPrice: 0,
-  // totalItems: 0,
 };
 
 export const cartSlice = createSlice({

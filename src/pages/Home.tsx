@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import React, { useContext, useEffect, useRef } from "react";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 
@@ -7,59 +6,57 @@ import { Categories } from "../components/Categories";
 import { list, Sort } from "../components/Sort";
 import { PizzaBlock } from "../components/PizzaBlock";
 import Skeleton from "../components/Skeleton";
-import type { Pizza } from "../types/Pizza";
 import { Pagination } from "../components/Pagination/Pagination";
 import { SearchContext } from "../App";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import * as filterAction from "../redux/slice/filterSlice";
+import * as pizzasAction from "../redux/slice/pizzaSlice";
 import type { SortType } from "../types/SortType";
 
 export const Home: React.FC = () => {
   const { inputQuery } = useContext(SearchContext);
-  const [items, setItems] = useState<Pizza[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const categoryId = useAppSelector((state) => state.filter.categoryId);
-  const sortType = useAppSelector((state) => state.filter.sort);
-  const currentPage = useAppSelector((state) => state.filter.currentPage);
+  const { items, isLoading } = useAppSelector((state) => state.pizza);
+  const { categoryId, sort, currentPage } = useAppSelector(
+    (state) => state.filter
+  );
 
-  const fetchPizzas = () => {
-    setIsLoading(true);
-
-    const sortBy = sortType.sortProperty.replace("-", "");
-    const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+  const getPizzas = () => {
+    const sortBy = sort.sortProperty.replace("-", "");
+    const order = sort.sortProperty.includes("-") ? "asc" : "desc";
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = inputQuery ? `&search=${inputQuery}` : "";
 
-    axios
-      .get(
-        `https://68a7506d639c6a54e9a1aeba.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((res) => {
-        setItems(res.data);
+    dispatch(
+      pizzasAction.fetchPizzas({
+        sortBy,
+        order,
+        category,
+        search,
+        currentPage,
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    );
+
+    window.scrollTo(0, 0);
   };
 
-  // Если изменили параметры и был первый рендре 
+  // Если изменили параметры и был первый рендре
   useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
-        sortProperty: sortType.sortProperty,
+        sortProperty: sort.sortProperty,
         categoryId,
         currentPage,
       });
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [categoryId, sortType.sortProperty, currentPage]);
+  }, [categoryId, sort.sortProperty, currentPage]);
 
   // Если был первый рендер, то проверяем параметры ЮРЛ и сохраняем в редакс
   useEffect(() => {
@@ -86,11 +83,11 @@ export const Home: React.FC = () => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
 
     isSearch.current = false;
-  }, [categoryId, sortType.sortProperty, inputQuery, currentPage]);
+  }, [categoryId, sort.sortProperty, inputQuery, currentPage]);
 
   const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
   const skeleton = [...new Array(8)].map((_, index) => (
@@ -104,7 +101,22 @@ export const Home: React.FC = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
+      {isLoading === "error" ? (
+        <div className="content__error-info">
+          <h2>
+            Произошла ошибка <span>😕</span>
+          </h2>
+          <p>
+            К сожалению, не удалось получить пиццы. Попробуйте повторить попытку
+            позже.
+          </p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {isLoading === "loading" ? skeleton : pizzas}
+        </div>
+      )}
+
       <Pagination />
     </div>
   );
