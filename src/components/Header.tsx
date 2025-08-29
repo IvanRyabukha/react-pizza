@@ -4,10 +4,11 @@ import { useAppSelector } from "../redux/hooks";
 
 import logoSvg from "../assets/img/pizza-logo.svg";
 import { Search } from "./Search/Search";
+import { selectCart } from "../redux/slice/cartSlice";
 
 
 export const Header: React.FC = () => {
-  const { totalPrice, items } = useAppSelector((state) => state.cart);
+  const { totalPrice, items } = useAppSelector(selectCart);
   
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 

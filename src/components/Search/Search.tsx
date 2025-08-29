@@ -1,26 +1,27 @@
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import debounce from 'lodash.debounce';
 
-import { SearchContext } from "../../App";
+import * as filterAction from "../../redux/slice/filterSlice";
+import { useAppDispatch } from "../../redux/hooks";
 
 import searchIcon from "../../assets/img/search.svg";
 import closeIcon from "../../assets/img/close.svg";
 import styles from "./Search.module.scss";
 
 export const Search: React.FC = () => {
-  const { inputQuery, setInputQuery } = useContext(SearchContext);
+  const dispatch = useAppDispatch();
   const [currentInputQuery, setCurrentInputQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputClear = () => {
-    setInputQuery('');
+    dispatch(filterAction.setSearchQuery(''));
     setCurrentInputQuery('');
     inputRef.current?.focus();
   };
 
   const handleInputChange = useCallback(
     debounce((query) => {
-      setInputQuery(query);
+      dispatch(filterAction.setSearchQuery(query));
     }, 300),
     [],
   );
@@ -40,7 +41,7 @@ export const Search: React.FC = () => {
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
-      {inputQuery &&
+      {currentInputQuery &&
       <img
         className={styles.closeIcon}
         src={closeIcon}

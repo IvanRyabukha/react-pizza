@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import * as cartAction from '../redux/slice/cartSlice';
 import type { Pizza, PizzaCartItem } from "../types/Pizza";
+import { selectCartItemById } from "../redux/slice/cartSlice";
 
 type PizzaBlockProps = Pick<
   Pizza,
@@ -19,7 +20,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   types,
 }) => {
   const dispatch = useAppDispatch();
-  const count = useAppSelector((state) => state.cart.items.find(item => item.id === id)?.count || 0);
+  const count = useAppSelector(selectCartItemById(id));
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
 

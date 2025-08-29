@@ -5,6 +5,7 @@ type FilterState = {
   categoryId: number;
   currentPage: number;
   sort: SortType;
+  searchQuery: string;
 };
 
 type Filters = {
@@ -20,6 +21,7 @@ const initialState: FilterState = {
     name: "популярности",
     sortProperty: "rating",
   },
+  searchQuery: '',
 };
 
 export const filterSlice = createSlice({
@@ -40,9 +42,12 @@ export const filterSlice = createSlice({
       state.categoryId = Number(action.payload.categoryId);
       state.sort = action.payload.sort;
     },
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload;
+    },
   },
 });
 
-export const { setCategoryId, setSort, setCurrentPage, setFilters } =
+export const { setCategoryId, setSort, setCurrentPage, setFilters, setSearchQuery } =
   filterSlice.actions;
 export default filterSlice.reducer;

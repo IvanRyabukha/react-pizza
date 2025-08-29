@@ -5,10 +5,11 @@ import * as cartAction from "../redux/slice/cartSlice";
 import { Link } from "react-router-dom";
 import { CartItem } from "../components/CartItem";
 import { EmptyCart } from "../components/EmptyCart";
+import { selectCart } from "../redux/slice/cartSlice";
 
 export const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { totalPrice, items } = useAppSelector((state) => state.cart);
+  const { totalPrice, items } = useAppSelector(selectCart);
 
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 

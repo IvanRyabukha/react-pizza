@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 
@@ -7,14 +7,12 @@ import { list, Sort } from "../components/Sort";
 import { PizzaBlock } from "../components/PizzaBlock";
 import Skeleton from "../components/Skeleton";
 import { Pagination } from "../components/Pagination/Pagination";
-import { SearchContext } from "../App";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import * as filterAction from "../redux/slice/filterSlice";
 import * as pizzasAction from "../redux/slice/pizzaSlice";
 import type { SortType } from "../types/SortType";
 
 export const Home: React.FC = () => {
-  const { inputQuery } = useContext(SearchContext);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -22,7 +20,7 @@ export const Home: React.FC = () => {
   const isMounted = useRef(false);
 
   const { items, isLoading } = useAppSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useAppSelector(
+  const { categoryId, sort, currentPage, searchQuery } = useAppSelector(
     (state) => state.filter
   );
 
@@ -30,7 +28,7 @@ export const Home: React.FC = () => {
     const sortBy = sort.sortProperty.replace("-", "");
     const order = sort.sortProperty.includes("-") ? "asc" : "desc";
     const category = categoryId > 0 ? `category=${categoryId}` : "";
-    const search = inputQuery ? `&search=${inputQuery}` : "";
+    const search = searchQuery ? `&search=${searchQuery}` : "";
 
     dispatch(
       pizzasAction.fetchPizzas({
@@ -87,7 +85,7 @@ export const Home: React.FC = () => {
     }
 
     isSearch.current = false;
-  }, [categoryId, sort.sortProperty, inputQuery, currentPage]);
+  }, [categoryId, sort.sortProperty, searchQuery, currentPage]);
 
   const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
   const skeleton = [...new Array(8)].map((_, index) => (
