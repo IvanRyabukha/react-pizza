@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import qs from "qs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Categories } from "../components/Categories";
 import { list, Sort } from "../components/Sort";
@@ -87,11 +87,8 @@ export const Home: React.FC = () => {
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchQuery, currentPage]);
 
-  const pizzas = items.map((item) => (
-    <Link key={item.id} to={`/pizza/${item.id}`}>
-      <PizzaBlock {...item} />
-    </Link>
-  ));
+  const pizzas = items.map((item) => <PizzaBlock {...item} />);
+
   const skeleton = [...new Array(8)].map((_, index) => (
     <Skeleton key={index} />
   ));

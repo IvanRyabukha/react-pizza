@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import debounce from 'lodash.debounce';
+import debounce from "lodash.debounce";
 
 import * as filterAction from "../../redux/slice/filterSlice";
 import { useAppDispatch } from "../../redux/hooks";
@@ -10,12 +10,12 @@ import styles from "./Search.module.scss";
 
 export const Search: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [currentInputQuery, setCurrentInputQuery] = useState('');
+  const [currentInputQuery, setCurrentInputQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputClear = () => {
-    dispatch(filterAction.setSearchQuery(''));
-    setCurrentInputQuery('');
+    dispatch(filterAction.setSearchQuery(""));
+    setCurrentInputQuery("");
     inputRef.current?.focus();
   };
 
@@ -23,12 +23,12 @@ export const Search: React.FC = () => {
     debounce((query) => {
       dispatch(filterAction.setSearchQuery(query));
     }, 300),
-    [],
+    []
   );
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentInputQuery(e.target.value);
-    handleInputChange(e.target.value)
+    handleInputChange(e.target.value);
   };
 
   return (
@@ -41,13 +41,14 @@ export const Search: React.FC = () => {
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
-      {currentInputQuery &&
-      <img
-        className={styles.closeIcon}
-        src={closeIcon}
-        alt="Close Icon"
-        onClick={handleInputClear}
-      />}
+      {currentInputQuery && (
+        <img
+          className={styles.closeIcon}
+          src={closeIcon}
+          alt="Close Icon"
+          onClick={handleInputClear}
+        />
+      )}
     </div>
   );
 };

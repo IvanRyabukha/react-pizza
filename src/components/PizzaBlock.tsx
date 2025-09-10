@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import * as cartAction from '../redux/slice/cartSlice';
+import * as cartAction from "../redux/slice/cartSlice";
 import type { Pizza, PizzaCartItem } from "../types/Pizza";
 import { selectCartItemById } from "../redux/slice/cartSlice";
+import { Link } from "react-router-dom";
 
 type PizzaBlockProps = Pick<
   Pizza,
@@ -40,8 +41,12 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
 
   return (
     <div className="pizza-block">
-      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-      <h4 className="pizza-block__title">{title}</h4>
+      <Link to={`/pizza/${id}`}>
+        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+      </Link>
+      <Link to={`/pizza/${id}`}>
+        <h4 className="pizza-block__title">{title}</h4>
+      </Link>
       <div className="pizza-block__selector">
         <ul>
           {types.map((type: number) => (
@@ -68,7 +73,10 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <button className="button button--outline button--add" onClick={onClickAdd}>
+        <button
+          className="button button--outline button--add"
+          onClick={onClickAdd}
+        >
           <svg
             width="12"
             height="12"

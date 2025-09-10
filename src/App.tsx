@@ -5,9 +5,9 @@ import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { Cart } from "./pages/Cart";
 import { SinglePizza } from "./pages/SinglePizza";
+import { MainLayout } from "./layouts/MainLayout";
 
 import "./scss/app.scss";
-import { MainLayout } from "./layouts/MainLayout";
 
 const App: React.FC = () => {
   return (

@@ -19,7 +19,6 @@ export const Pagination: React.FC = () => {
       pageRangeDisplayed={4}
       pageCount={3}
       forcePage={currentPage - 1}
-      renderOnZeroPageCount={null}
     />
   );
 };

@@ -27,7 +27,7 @@ export const SinglePizza: React.FC = () => {
 
   if (!singlePizza) {
     return (
-      'Загрузка...'
+      <p>'Загрузка...'</p>
     );
   }
 
