@@ -87,7 +87,7 @@ export const Home: React.FC = () => {
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchQuery, currentPage]);
 
-  const pizzas = items.map((item) => <PizzaBlock {...item} />);
+  const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
 
   const skeleton = [...new Array(8)].map((_, index) => (
     <Skeleton key={index} />
@@ -97,7 +97,7 @@ export const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {isLoading === "error" ? (

@@ -21,15 +21,11 @@ export const CartItem: React.FC<Props> = ({
   };
 
   const handleItemDecr = () => {
-    if (count > 1) {
-      dispatch(cartAction.decrCount(id));
-    } else {
-      dispatch(cartAction.removeItem(id));
-    }
+    dispatch(cartAction.decrCount(id));
   };
 
   const handleRemoveItem = () => {
-    if(window.confirm('Вы уверены что хотите удалить товар ?')) {
+    if (window.confirm("Вы уверены что хотите удалить товар ?")) {
       dispatch(cartAction.removeItem(id));
     }
   };
@@ -46,9 +42,10 @@ export const CartItem: React.FC<Props> = ({
         </p>
       </div>
       <div className="cart__item-count">
-        <div
+        <button
+          disabled={count === 1}
           onClick={handleItemDecr}
-          className="button button--outline button--circle cart__item-count-minus"
+          className={"button button--outline button--circle cart__item-count-minus"}
         >
           <svg
             width="10"
@@ -66,9 +63,9 @@ export const CartItem: React.FC<Props> = ({
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
         <b>{count}</b>
-        <div
+        <button
           onClick={handleItemIncr}
           className="button button--outline button--circle cart__item-count-plus"
         >
@@ -88,13 +85,16 @@ export const CartItem: React.FC<Props> = ({
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
       </div>
       <div className="cart__item-price">
         <b>{price * count} ₽</b>
       </div>
       <div className="cart__item-remove">
-        <div className="button button--outline button--circle" onClick={handleRemoveItem}>
+        <div
+          className="button button--outline button--circle"
+          onClick={handleRemoveItem}
+        >
           <svg
             width="10"
             height="10"

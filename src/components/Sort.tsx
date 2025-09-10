@@ -4,7 +4,7 @@ import arrowTop from "../assets/img/arrow-top.svg";
 import arrowDown from "../assets/img/arrow-down.svg";
 import type { SortType } from "../types/SortType";
 import * as filterAction from "../redux/slice/filterSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 
 export const list: SortType[] = [
   { name: "популярности (DESC)", sortProperty: "rating" },
@@ -15,8 +15,11 @@ export const list: SortType[] = [
   { name: "алфавиту (ASC)", sortProperty: "-title" },
 ];
 
-export const Sort: React.FC = () => {
-  const sortType = useAppSelector((state) => state.filter.sort);
+type SortProps = {
+  value: SortType;
+};
+
+export const Sort: React.FC<SortProps> = React.memo(({ value }) => {
   const dispatch = useAppDispatch();
   const sortRef = useRef<HTMLDivElement>(null);
 
@@ -24,16 +27,16 @@ export const Sort: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if(sortRef.current && !sortRef.current.contains(event.target as Node)) {
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
         setIsVisiblePopup(false);
       }
     };
 
-    document.body.addEventListener('click', handleClickOutside);
+    document.body.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.body.removeEventListener('click', handleClickOutside);
-    }
+      document.body.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -42,7 +45,7 @@ export const Sort: React.FC = () => {
         <img src={isVisiblePopup ? arrowDown : arrowTop} />
         <b>Сортировка по:</b>
         <span onClick={() => setIsVisiblePopup(!isVisiblePopup)}>
-          {sortType.name}
+          {value.name}
         </span>
       </div>
       {isVisiblePopup && (
@@ -52,7 +55,7 @@ export const Sort: React.FC = () => {
               <li
                 key={index}
                 className={
-                  sortType.sortProperty === item.sortProperty ? "active" : ""
+                  value.sortProperty === item.sortProperty ? "active" : ""
                 }
                 onClick={() => {
                   dispatch(filterAction.setSort(item));
@@ -67,4 +70,4 @@ export const Sort: React.FC = () => {
       )}
     </div>
   );
-};
+});
