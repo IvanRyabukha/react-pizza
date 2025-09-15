@@ -68,4 +68,5 @@ export const selectCartItemById = (id: number) => (state: {cart: CartState}) => 
 
 export const { addItem, removeItem, clearItems, incrCount, decrCount } =
   cartSlice.actions;
+
 export default cartSlice.reducer;
