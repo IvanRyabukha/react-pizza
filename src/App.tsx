@@ -1,11 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Home } from "./pages/Home";
-import { NotFound } from "./pages/NotFound";
-import { Cart } from "./pages/Cart";
-import { SinglePizza } from "./pages/SinglePizza";
 import { MainLayout } from "./layouts/MainLayout";
+
+const Cart = React.lazy(() => import("./pages/Cart"));
+const SinglePizza = React.lazy(() => import("./pages/SinglePizza"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 import "./scss/app.scss";
 
@@ -14,10 +15,31 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route path="" element={<Home />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="pizza/:pizzaId" element={<SinglePizza />} />
+        <Route
+          path="cart"
+          element={
+            <Suspense fallback={<div>Идет загрузка корзины...</div>}>
+              <Cart />
+            </Suspense>
+          }
+        />
+        <Route
+          path="pizza/:pizzaId"
+          element={
+            <Suspense fallback={<div>Идет загрузка пиццы...</div>}>
+              <SinglePizza />
+            </Suspense>
+          }
+        />
 
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<div>Идет загрузка...</div>}>
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Route>
     </Routes>
   );

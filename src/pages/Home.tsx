@@ -1,23 +1,21 @@
-import React, { useEffect, useRef } from "react";
-import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
-import { Categories } from "../components/Categories";
-import { list, Sort } from "../components/Sort";
-import { PizzaBlock } from "../components/PizzaBlock";
-import Skeleton from "../components/Skeleton";
-import { Pagination } from "../components/Pagination/Pagination";
+// import qs from "qs";
+// import { useNavigate, useSearchParams } from "react-router-dom";
+// import * as filterAction from "../redux/slice/filterSlice";
+// import type { SortType } from "../types/SortType";
+
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import * as filterAction from "../redux/slice/filterSlice";
 import * as pizzasAction from "../redux/slice/pizzaSlice";
-import type { SortType } from "../types/SortType";
+
+import {Skeleton, PizzaBlock, Categories, Sort, Pagination } from '../components';
 
 export const Home: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const isSearch = useRef(false);
-  const isMounted = useRef(false);
+  // const isSearch = useRef(false);
+  // const isMounted = useRef(false);
 
   const { items, isLoading } = useAppSelector((state) => state.pizza);
   const { categoryId, sort, currentPage, searchQuery } = useAppSelector(
@@ -45,47 +43,48 @@ export const Home: React.FC = () => {
 
   // Если изменили параметры и был первый рендре
   useEffect(() => {
-    if (isMounted.current) {
-      const queryString = qs.stringify({
-        sortProperty: sort.sortProperty,
-        categoryId,
-        currentPage,
-      });
-      navigate(`?${queryString}`);
-    }
-    isMounted.current = true;
-  }, [categoryId, sort.sortProperty, currentPage]);
+    getPizzas();
+    // if (isMounted.current) {
+    //   const queryString = qs.stringify({
+    //     sortProperty: sort.sortProperty,
+    //     categoryId,
+    //     currentPage,
+    //   });
+    //   navigate(`?${queryString}`);
+    // }
+    // isMounted.current = true;
+  }, [categoryId, sort.sortProperty, currentPage, searchQuery]);
 
   // Если был первый рендер, то проверяем параметры ЮРЛ и сохраняем в редакс
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = list.find(
-        (option) => option.sortProperty === params.sortProperty
-      );
+  // useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = qs.parse(window.location.search.substring(1));
+  //     const sort = list.find(
+  //       (option) => option.sortProperty === params.sortProperty
+  //     );
 
-      dispatch(
-        filterAction.setFilters({
-          sort: sort as SortType,
-          categoryId: params.categoryId as string,
-          currentPage: params.currentPage as string,
-        })
-      );
+  //     dispatch(
+  //       filterAction.setFilters({
+  //         sort: sort as SortType,
+  //         categoryId: params.categoryId as string,
+  //         currentPage: params.currentPage as string,
+  //       })
+  //     );
 
-      isSearch.current = true;
-    }
-  }, []);
+  //     isSearch.current = true;
+  //   }
+  // }, []);
 
-  // Если был первый рендре, то запрашиваем пиццы
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  // // Если был первый рендре, то запрашиваем пиццы
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
 
-    if (!isSearch.current) {
-      getPizzas();
-    }
+  //   if (!isSearch.current) {
+  //     getPizzas();
+  //   }
 
-    isSearch.current = false;
-  }, [categoryId, sort.sortProperty, searchQuery, currentPage]);
+  //   isSearch.current = false;
+  // }, [categoryId, sort.sortProperty, searchQuery, currentPage]);
 
   const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
 

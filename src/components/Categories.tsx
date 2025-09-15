@@ -31,3 +31,5 @@ export const Categories: React.FC = React.memo(() => {
     </div>
   );
 });
+
+export default Categories;

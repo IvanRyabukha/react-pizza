@@ -3,8 +3,7 @@ import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import * as cartAction from "../redux/slice/cartSlice";
 
 import { Link } from "react-router-dom";
-import { CartItem } from "../components/CartItem";
-import { EmptyCart } from "../components/EmptyCart";
+import { CartItem, EmptyCart } from "../components";
 import { selectCart } from "../redux/slice/cartSlice";
 
 export const Cart: React.FC = () => {
@@ -150,3 +149,5 @@ export const Cart: React.FC = () => {
     </div>
   );
 };
+
+export default Cart;

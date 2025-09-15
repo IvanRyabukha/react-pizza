@@ -96,3 +96,5 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
     </div>
   );
 };
+
+export default PizzaBlock;

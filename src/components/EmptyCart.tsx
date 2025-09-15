@@ -19,3 +19,5 @@ export const EmptyCart: React.FC = () => (
     </Link>
   </div>
 );
+
+export default EmptyCart;

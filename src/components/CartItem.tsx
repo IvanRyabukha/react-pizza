@@ -116,3 +116,5 @@ export const CartItem: React.FC<Props> = ({
     </div>
   );
 };
+
+export default CartItem;

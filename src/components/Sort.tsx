@@ -71,3 +71,5 @@ export const Sort: React.FC<SortProps> = React.memo(({ value }) => {
     </div>
   );
 });
+
+export default Sort;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import type { Pizza } from "../types/Pizza";
 
 export const SinglePizza: React.FC = () => {
@@ -42,6 +42,14 @@ export const SinglePizza: React.FC = () => {
         omnis dolor.
       </p>
       <h4>{singlePizza.price}</h4>
+
+      <Link to={'/'}>
+        <button className="button">
+          Назад
+        </button>
+      </Link>
     </div>
   );
 };
+
+export default SinglePizza;

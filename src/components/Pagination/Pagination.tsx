@@ -22,3 +22,5 @@ export const Pagination: React.FC = () => {
     />
   );
 };
+
+export default Pagination;
